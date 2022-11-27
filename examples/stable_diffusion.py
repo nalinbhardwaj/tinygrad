@@ -625,13 +625,14 @@ class StableDiffusion:
 # this is sd-v1-4.ckpt
 #FILENAME = "/Users/kafka/fun/mps/stable-diffusion/models/ldm/stable-diffusion-v1/model.ckpt"
 #FILENAME = "/home/kafka/model.ckpt"
-FILENAME = "weights/sd-v1-4.ckpt"
+# FILENAME = "/Users/nibnalin/Downloads/sd-v1-4.ckpt"
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Run Stable Diffusion', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   parser.add_argument('--steps', type=int, default=5, help="Number of steps in diffusion")
   parser.add_argument('--phrase', type=str, default="a horse sized cat eating a bagel", help="Phrase to render")
   parser.add_argument('--out', type=str, default="/tmp/rendered.png", help="Output filename")
+  parser.add_argument('--filename', type=str, default="/weights/sd-v1-4.ckpt", help="Weights filename")
   args = parser.parse_args()
 
   # WTF!! no_grad breaks it (only with OPENCL, now fixed)
@@ -639,7 +640,7 @@ if __name__ == "__main__":
   model = StableDiffusion()
 
   # load in weights
-  dat = fake_torch_load_zipped(open(FILENAME, "rb"))
+  dat = fake_torch_load_zipped(open(args.filename, "rb"))
   for k,v in tqdm(dat['state_dict'].items()):
     try:
       w = get_child(model, k)

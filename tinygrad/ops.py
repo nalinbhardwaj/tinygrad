@@ -38,6 +38,7 @@ class DeviceBuffer:
 class GenericExecAST(DeviceBuffer):
   @classmethod
   def exec_ast(cls, ast:LazyOp, preprocess=lambda x: x):
+    print("exec_ast", ast)
     srcs = [cls.exec_ast(x, preprocess) if isinstance(x, LazyOp) else preprocess(x) for x in ast.src]
     if ast.op in UnaryOps:
       ret = srcs[0].unary_op(ast.op)
